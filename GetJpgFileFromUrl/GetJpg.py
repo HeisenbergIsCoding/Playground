@@ -3,16 +3,24 @@ from bs4 import BeautifulSoup
 import os
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
+import configparser
+
+
+def read_api_key_from_config():
+    config = configparser.ConfigParser()
+    config.read('../config.ini')
+    return config['API']['scappingant_api_key']
 
 
 def get_from_url(url):
-    sa_key = ''
+    sa_key = read_api_key_from_config()
     sa_api = 'https://api.scrapingant.com/v2/general'
     qParams = {'url': url, 'x-api-key': sa_key}
     reqUrl = f'{sa_api}?{urllib.parse.urlencode(qParams)}'
     r = requests.get(reqUrl)
     soup = BeautifulSoup(r.content, 'lxml')
     return soup
+
 
 def download_image(url, save_path):
     headers = {
@@ -62,6 +70,7 @@ def get_jpg_file_from_url(url, path):
     # 建立資料夾
     if not os.path.exists(os.path.join(path, file_name)):
         os.makedirs(os.path.join(path, file_name))
+        print('資料夾建立完成: ' + file_name)
     # 找需要的圖片位址
     element_id = "thumbnail-container"
     element = soup.find('div', id=element_id)
@@ -78,7 +87,8 @@ def get_jpg_file_from_url(url, path):
 
 if __name__ == '__main__':
     # 要下載的網址
-    url = ''
+    url_list = ['']
     # 要存放的路徑
     path = ''
-    get_jpg_file_from_url(url, path)
+    for url in url_list:
+        get_jpg_file_from_url(url, path)

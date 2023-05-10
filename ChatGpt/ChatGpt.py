@@ -1,8 +1,13 @@
 import openai
 import os
 import json
+import configparser
 
-openai.api_key = ""
+
+def read_api_key_from_config():
+    config = configparser.ConfigParser()
+    config.read('../config.ini')
+    return config['API']['chatgpt_api_key']
 
 
 def save_reply_content(reply_message, file_name):
@@ -46,5 +51,6 @@ def chat_to_bot(prompt, file_name='reply.txt'):
 
 
 if __name__ == '__main__':
-    prompt = "你說的健康問題是什麼樣的問題"
+    openai.api_key = read_api_key_from_config()
+    prompt = "你之前說的c++是怎樣的語言"
     chat_to_bot(prompt)
