@@ -35,4 +35,7 @@ def en_to_cn(text):
 
 if __name__ == '__main__':
     openai.api_key = MyConfig.read_api_key_from_config()
+    # yt的url
+    url = ''
+    get_video_to_mp3(url)
     get_video_txt()
