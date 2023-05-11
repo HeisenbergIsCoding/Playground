@@ -1,13 +1,7 @@
 import openai
 import os
 import json
-import configparser
-
-
-def read_api_key_from_config():
-    config = configparser.ConfigParser()
-    config.read('../config.ini')
-    return config['API']['chatgpt_api_key']
+import Config as MyConfig
 
 
 def save_reply_content(reply_message, file_name):
@@ -51,6 +45,15 @@ def chat_to_bot(prompt, file_name='reply.txt'):
 
 
 if __name__ == '__main__':
-    openai.api_key = read_api_key_from_config()
-    prompt = "你之前說的c++是怎樣的語言"
+    openai.api_key = MyConfig.read_api_key_from_config()
+    prompt = """
+    def read_contents_from_file(file_name):
+    content_list = []
+    with open(file_name, "r", encoding="utf-8") as file:
+        for line in file.readlines():
+            load_str_to_json = json.loads(line.strip())
+            content_list.append(load_str_to_json)
+    return content_list
+    優化上面的程式碼
+    """
     chat_to_bot(prompt)

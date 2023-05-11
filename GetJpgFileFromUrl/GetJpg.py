@@ -3,17 +3,11 @@ from bs4 import BeautifulSoup
 import os
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
-import configparser
-
-
-def read_api_key_from_config():
-    config = configparser.ConfigParser()
-    config.read('../config.ini')
-    return config['API']['scappingant_api_key']
+import Config as MyConfig
 
 
 def get_from_url(url):
-    sa_key = read_api_key_from_config()
+    sa_key = MyConfig.read_api_key_from_config()
     sa_api = 'https://api.scrapingant.com/v2/general'
     qParams = {'url': url, 'x-api-key': sa_key}
     reqUrl = f'{sa_api}?{urllib.parse.urlencode(qParams)}'
